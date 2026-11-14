@@ -6,6 +6,8 @@ similarity + user preferences, with a reason attached to every suggestion.
 **Dataset:** MovieLens 32M (32,000,204 ratings · 200,948 users · 87,585 movies).
 **Deployment target:** Vercel (Hobby, Python runtime).
 
+**Live:** https://cinesense-mu.vercel.app
+
 ---
 
 ## Status
@@ -150,8 +152,15 @@ on the first attempt), so it is not used here.
 .\.venv\Scripts\python.exe -m uvicorn cinesense.serving.app:app --port 8011
 # then open http://127.0.0.1:8011
 
-.\.venv\Scripts\python.exe -m pytest             # 163 tests, no network
-.\.venv\Scripts\python.exe scripts\check_ui.py   # 16 browser checks (needs the server)
+.\.venv\Scripts\python.exe -m pytest             # 192 tests, no network
+.\.venv\Scripts\python.exe scripts\check_ui.py   # 29 browser checks (needs the server)
+```
+
+Point the browser checks at a deployment with `CINESENSE_BASE`:
+
+```powershell
+$env:CINESENSE_BASE = "https://cinesense-mu.vercel.app"
+.\.venv\Scripts\python.exe scripts\check_ui.py
 ```
 
 ### Posters

@@ -9,13 +9,15 @@ matter: rating a film, and onboarding.
 
 from __future__ import annotations
 
+import os
 import re
 import sys
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
-BASE = "http://127.0.0.1:8011"
+#: Point at a deployment with CINESENSE_BASE, e.g. a Vercel URL.
+BASE = os.environ.get("CINESENSE_BASE", "http://127.0.0.1:8011").rstrip("/")
 SHOTS = Path("C:/Users/shela/AppData/Local/Temp/opencode/ui")
 SHOTS.mkdir(parents=True, exist_ok=True)
 
@@ -191,8 +193,15 @@ def main() -> int:
         page.screenshot(path=str(SHOTS / "taste-1440.png"))
 
         page.goto(f"{BASE}/#/about", wait_until="networkidle")
-        page.wait_for_selector("h1")
-        check(page.locator("table.metrics").count() >= 1, "about: metrics table present")
+        # Waiting for h1 races the previous view: the old heading satisfies the
+        # selector before About has finished fetching /api/stats. Wait for the
+        # thing being asserted instead.
+        try:
+            page.wait_for_selector("table.metrics", timeout=20000)
+            has_table = True
+        except Exception:
+            has_table = False
+        check(has_table, "about: metrics table present")
         page.screenshot(path=str(SHOTS / "about-1440.png"), full_page=True)
 
         # -- phone ---------------------------------------------------------
