@@ -1,0 +1,20 @@
+# Local development and offline training only. Never deployed.
+#
+# Installing this file drags in pandas/scipy/scikit-learn, which is exactly why
+# the API process must not import them.
+
+-r requirements.txt
+
+pandas>=2.2,<4.0
+pyarrow>=15.0
+duckdb>=1.0
+scikit-learn>=1.4,<2.0
+scipy>=1.11
+requests>=2.31
+
+# Tooling
+pytest>=8.0
+httpx>=0.27
+uvicorn>=0.30
+psutil>=6.0        # peak-RSS measurement in scripts/measure_build.py
+playwright>=1.40   # browser checks in scripts/check_ui.py (uses installed Edge)

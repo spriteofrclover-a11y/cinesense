@@ -1,0 +1,27 @@
+# Local environment
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Raw and derived data are reproducible from `cinesense build-catalog`.
+# Never commit them: ml-32m is ~240 MB compressed, ~1.2 GB extracted.
+data/raw/
+data/cache/
+data/processed/
+
+# Model artifacts ARE committed (small, ~55 MB) so deploys never need training.
+# Only scratch outputs are ignored.
+artifacts/scratch/
+
+# Secrets
+.env
+.env.local
+
+# OS noise
+Thumbs.db
+.DS_Store

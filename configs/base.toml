@@ -1,0 +1,107 @@
+# CineSense configuration.
+#
+# Everything tunable lives here, not in code. `cinesense.config.load_settings`
+# rejects unknown keys, so a typo fails loudly instead of silently defaulting.
+
+[dataset]
+name = "MovieLens 32M"
+slug = "ml-32m"
+url = "https://files.grouplens.org/datasets/movielens/ml-32m.zip"
+
+# sha256 of the archive. Recorded from the first successful build so every
+# subsequent build verifies it. Update deliberately, never silently.
+sha256 = "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+
+[genome]
+# The tag genome (1,128 semantic relevance scores per movie) ships only with
+# ml-25m, so enabling this fetches a second ~262 MB archive and joins on movieId.
+# Measured in scripts/measure_genome.py: genome-aware neighbours are rated
+# similarly by the same users 2.4x more often than text-only neighbours.
+# Covers 15.8% of the catalogue but 70.2% of movies with >=30 ratings.
+enabled = true
+url = "https://files.grouplens.org/datasets/movielens/ml-25m.zip"
+# Relative to the L2-normalised text blocks. The measured sweep peaks at 1.0-2.0.
+weight = 1.5
+
+[ingest]
+# duckdb stays inside these bounds so a 32M-row ingest never pages on a 8 GB box.
+memory_limit = "2GB"
+threads = 4
+
+[quality]
+# Fail the build if the TMDB join is worse than this. Set to 0 to only warn.
+min_tmdb_coverage = 0.30
+# Above this the ratings matrix is treated as a red flag in the report.
+max_sparsity = 0.999
+# Below this a dataset is too small for collaborative filtering to mean much.
+min_ratings = 100_000
+# Movies carrying at least one genre. A low number means parsing broke.
+min_genre_coverage = 0.90
+
+[quality.filters]
+# Reported, not applied, at this stage. Phase 3 applies them when building the
+# ratings matrix, so we can see how much data the thresholds would discard.
+min_movie_ratings = 30
+min_user_ratings = 5
+
+[features]
+# Field weights, applied after each field is L2-normalised so token count
+# cannot make one field dominate.
+title_weight = 0.5
+genres_weight = 1.0
+tags_weight = 1.5
+
+max_features_title = 40_000
+max_features_tags = 60_000
+min_df_tags = 5
+
+# Latent dimension for LSA. 96 keeps the shipped float16 matrix at ~17 MB,
+# which is the main reason LSA exists here rather than a sparse matrix.
+lsa_components = 96
+top_terms = 8
+random_state = 42
+
+[recommend]
+neighbours = 50
+default_k = 10
+
+[collab]
+# Latent factors for SVD. 64 keeps the shipped float16 item matrix at ~11 MB.
+factors = 64
+# Bias regularisation. Datasets are 99.8% sparse, so unregularised biases
+# explode on users and items with a handful of ratings.
+regularisation = 10.0
+bias_iterations = 5
+# Held-out fraction used to report honest RMSE and ranking metrics. The model
+# that ships is the one trained on the remaining 90%.
+test_fraction = 0.10
+min_user_ratings = 5
+min_movie_ratings = 30
+random_state = 42
+
+[hybrid]
+# Weights are applied to z-scored signals so they are comparable.
+content_weight = 1.0
+collab_weight = 1.2
+popularity_weight = 0.25
+# 1.0 disables MMR diversification; 0.0 ignores relevance entirely.
+mmr_lambda = 0.75
+candidate_pool = 200
+
+[posters]
+# TMDB posters are fetched once, offline, and only the image path is stored.
+# The browser then loads them from TMDB's CDN: no key at runtime, no API calls
+# while serving. Without a key the UI falls back to generated card art.
+enabled = true
+api_key_env = "TMDB_API_KEY"
+image_base = "https://image.tmdb.org/t/p/"
+size = "w342"
+# Fetch metadata for films with at least this many ratings. Language and country
+# only exist for films we fetched, so the threshold decides how much of the
+# long tail can be filtered by language: 30 covers 19.7k films, 5 covers 43.9k.
+min_ratings = 5
+# TMDB allows roughly 50/s. Requests are throttled to this rate overall and
+# `_fetch_poster` backs off on 429, so the run self-corrects if pushed too hard.
+requests_per_second = 40.0
+# Concurrency: latency to TMDB (~500 ms) dwarfs the work, so overlap it.
+workers = 20

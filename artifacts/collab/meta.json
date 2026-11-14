@@ -1,0 +1,13 @@
+{
+  "trained_at": "2026-11-14T00:18:36+00:00",
+  "factors": 64,
+  "n_users": 200948,
+  "n_items": 87585,
+  "n_train": 28474408,
+  "n_test": 3163302,
+  "global_mean": 3.546595,
+  "rmse": 0.8167,
+  "rmse_baseline": 0.8543,
+  "explained_variance": 0.1574,
+  "wall_seconds": 78.76
+}

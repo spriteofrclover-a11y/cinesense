@@ -1,0 +1,132 @@
+{
+  "manifest_version": 1,
+  "generated_at": "2026-11-14T08:25:23+00:00",
+  "generator": {
+    "python": "3.12.6",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "executable": "D:\\AI projects\\SCHOOL ASISSTS\\AI-Movie-Recomendation-System\\.venv\\Scripts\\python.exe",
+    "cinesense_version": "0.1.0"
+  },
+  "dataset": {
+    "name": "MovieLens 32M",
+    "slug": "ml-32m",
+    "url": ""
+  },
+  "config": {
+    "path": null,
+    "values": {
+      "dataset": {
+        "name": "MovieLens 32M",
+        "slug": "ml-32m",
+        "url": "https://files.grouplens.org/datasets/movielens/ml-32m.zip",
+        "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+      },
+      "ingest": {
+        "memory_limit": "2GB",
+        "threads": 4
+      },
+      "quality": {
+        "min_tmdb_coverage": 0.3,
+        "max_sparsity": 0.999,
+        "min_ratings": 100000,
+        "min_genre_coverage": 0.9,
+        "filters": {
+          "min_movie_ratings": 30,
+          "min_user_ratings": 5
+        }
+      },
+      "features": {
+        "title_weight": 0.5,
+        "genres_weight": 1.0,
+        "tags_weight": 1.5,
+        "max_features_title": 40000,
+        "max_features_tags": 60000,
+        "min_df_tags": 5,
+        "lsa_components": 96,
+        "top_terms": 8,
+        "random_state": 42
+      },
+      "genome": {
+        "enabled": true,
+        "url": "https://files.grouplens.org/datasets/movielens/ml-25m.zip",
+        "weight": 1.5
+      },
+      "recommend": {
+        "neighbours": 50,
+        "default_k": 10
+      },
+      "collab": {
+        "factors": 64,
+        "regularisation": 10.0,
+        "bias_iterations": 5,
+        "test_fraction": 0.1,
+        "min_user_ratings": 5,
+        "min_movie_ratings": 30,
+        "random_state": 42
+      },
+      "hybrid": {
+        "content_weight": 1.0,
+        "collab_weight": 1.2,
+        "popularity_weight": 0.25,
+        "mmr_lambda": 0.75,
+        "candidate_pool": 200
+      },
+      "posters": {
+        "enabled": true,
+        "api_key_env": "TMDB_API_KEY",
+        "image_base": "https://image.tmdb.org/t/p/",
+        "size": "w342",
+        "min_ratings": 30,
+        "requests_per_second": 40.0,
+        "workers": 20
+      }
+    }
+  },
+  "stats": {
+    "movies": 87585,
+    "dimensions": 96,
+    "field_vocabulary": {
+      "title": 34880,
+      "genres": 19,
+      "tags": 17380
+    },
+    "field_nonzeros": {
+      "title": 336332,
+      "genres": 147090,
+      "tags": 1387357
+    },
+    "combined_nonzeros": 17450715,
+    "text_nonzeros": 1870779,
+    "lsa_explained_variance": 0.4898,
+    "sparse_dense_mb": 17843.8,
+    "genome": {
+      "weight": 1.5,
+      "nonzeros": 15579936,
+      "covered": 13812,
+      "coverage": 0.1577
+    },
+    "artifact_mb": 19.63,
+    "wall_seconds": 186.65
+  },
+  "artifacts": [
+    {
+      "name": "vectors.npy",
+      "bytes": 16816448,
+      "sha256": "969120ead952e0928b7ce8b9b791cc4dbc5f10ba72e9baf569c074db8408b481",
+      "rows": 87585
+    },
+    {
+      "name": "movie_ids.npy",
+      "bytes": 350468,
+      "sha256": "c79958bafcbeeeff87804da38301e553544188a5e48a1b58447fe3d36e78ab9d",
+      "rows": 87585
+    },
+    {
+      "name": "catalog.json.gz",
+      "bytes": 3412097,
+      "sha256": "25e32cf3c796c942804ecc2a8535ce25a0f3d86609c0e5486974fc19db813031",
+      "rows": 87585
+    }
+  ],
+  "total_bytes": 20579013
+}

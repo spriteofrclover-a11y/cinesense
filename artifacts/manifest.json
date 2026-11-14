@@ -1,0 +1,145 @@
+{
+  "manifest_version": 1,
+  "generated_at": "2026-11-14T08:22:13+00:00",
+  "generator": {
+    "python": "3.12.6",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "executable": "D:\\AI projects\\SCHOOL ASISSTS\\AI-Movie-Recomendation-System\\.venv\\Scripts\\python.exe",
+    "cinesense_version": "0.1.0"
+  },
+  "dataset": {
+    "name": "MovieLens 32M",
+    "slug": "ml-32m",
+    "url": "https://files.grouplens.org/datasets/movielens/ml-32m.zip"
+  },
+  "config": {
+    "path": "D:\\AI projects\\SCHOOL ASISSTS\\AI-Movie-Recomendation-System\\configs\\base.toml",
+    "values": {
+      "dataset": {
+        "name": "MovieLens 32M",
+        "slug": "ml-32m",
+        "url": "https://files.grouplens.org/datasets/movielens/ml-32m.zip",
+        "sha256": "e4a68655d7386b8f95f2f2424b2ff975dfdd15ffd59e0d864a14dca43e99d6ee"
+      },
+      "ingest": {
+        "memory_limit": "2GB",
+        "threads": 4
+      },
+      "quality": {
+        "min_tmdb_coverage": 0.3,
+        "max_sparsity": 0.999,
+        "min_ratings": 100000,
+        "min_genre_coverage": 0.9,
+        "filters": {
+          "min_movie_ratings": 30,
+          "min_user_ratings": 5
+        }
+      },
+      "features": {
+        "title_weight": 0.5,
+        "genres_weight": 1.0,
+        "tags_weight": 1.5,
+        "max_features_title": 40000,
+        "max_features_tags": 60000,
+        "min_df_tags": 5,
+        "lsa_components": 96,
+        "top_terms": 8,
+        "random_state": 42
+      },
+      "genome": {
+        "enabled": true,
+        "url": "https://files.grouplens.org/datasets/movielens/ml-25m.zip",
+        "weight": 1.5
+      },
+      "recommend": {
+        "neighbours": 50,
+        "default_k": 10
+      },
+      "collab": {
+        "factors": 64,
+        "regularisation": 10.0,
+        "bias_iterations": 5,
+        "test_fraction": 0.1,
+        "min_user_ratings": 5,
+        "min_movie_ratings": 30,
+        "random_state": 42
+      },
+      "hybrid": {
+        "content_weight": 1.0,
+        "collab_weight": 1.2,
+        "popularity_weight": 0.25,
+        "mmr_lambda": 0.75,
+        "candidate_pool": 200
+      },
+      "posters": {
+        "enabled": true,
+        "api_key_env": "TMDB_API_KEY",
+        "image_base": "https://image.tmdb.org/t/p/",
+        "size": "w342",
+        "min_ratings": 30,
+        "requests_per_second": 40.0,
+        "workers": 20
+      }
+    }
+  },
+  "stats": {
+    "rows": {
+      "movies": 87585,
+      "ratings": 32000204,
+      "tags": 2000072,
+      "links": 87585,
+      "movies_enriched": 87585
+    },
+    "users": 200948,
+    "rated_movies": 84432,
+    "ratings": 32000204,
+    "avg_rating": 3.5404,
+    "density": 0.00181819,
+    "sparsity": 0.99818181,
+    "timestamp_range": [
+      789652004,
+      1697164147
+    ],
+    "tmdb_id_present": 87461,
+    "tmdb_id_coverage": 0.9986,
+    "imdb_id_coverage": 1.0,
+    "genre_coverage": 0.9192,
+    "tag_coverage": 0.586,
+    "min_movie_ratings": 30,
+    "movies_over_min_ratings": 19670,
+    "min_user_ratings": 5,
+    "users_over_min_ratings": 200948
+  },
+  "artifacts": [
+    {
+      "name": "links.parquet",
+      "bytes": 782339,
+      "sha256": "5709b720a612a9f314f0b8c01f1e57707a869564ea0b3bccd02f6bdaf9eff714",
+      "rows": 87585
+    },
+    {
+      "name": "movies.parquet",
+      "bytes": 13046172,
+      "sha256": "59f86148292c261ef55ce034b2497a2d0fc610bcf4038fdf6a7bd6814147779d",
+      "rows": 87585
+    },
+    {
+      "name": "ratings.parquet",
+      "bytes": 158832434,
+      "sha256": "57e5818806e2b30154e47ceb79a8ad1c2365ac266c8746f2eb3a94ca42b98118",
+      "rows": 32000204
+    },
+    {
+      "name": "tags.parquet",
+      "bytes": 13029761,
+      "sha256": "390807bfc002923762000b307fcf961c82e8ec6e3b1604f563f48a73628888de",
+      "rows": 2000072
+    },
+    {
+      "name": "tags_by_movie.parquet",
+      "bytes": 4409346,
+      "sha256": "026a79e8bae6c9caf8a854140523ef769684bb2ce257c6d4946d165c93bed007"
+    }
+  ],
+  "total_bytes": 190100052
+}
